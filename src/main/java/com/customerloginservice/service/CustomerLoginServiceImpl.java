@@ -7,11 +7,13 @@ import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.customerloginservice.constants.AppConstants;
 import com.customerloginservice.domain.CustomerDetailsDTO;
+import com.customerloginservice.domain.CustomerResponse;
 import com.customerloginservice.domain.OTPRequest;
 import com.customerloginservice.domain.OTPResponse;
 import com.customerloginservice.domain.VerifyOTPResponse;
@@ -22,6 +24,7 @@ import com.customerloginservice.exceptions.StatusHandler;
 import com.customerloginservice.mapper.CustomerMapper;
 import com.customerloginservice.repository.CustomerDetailsRepository;
 import com.customerloginservice.repository.CustomerLoginRepository;
+import com.customerloginservice.utils.CustomerUtils;
 
 
 
@@ -34,12 +37,15 @@ public class CustomerLoginServiceImpl implements CustomerLoginService {
 	private final CustomerLoginRepository customerLoginRepository;
 	private final CustomerDetailsRepository customerDetailsRepository;
 	private final CustomerMapper mapper;
+	private final CustomerUtils customerUtils;
 
+	@Autowired
     public CustomerLoginServiceImpl(CustomerLoginRepository customerLoginRepository, CustomerDetailsRepository customerDetailsRepository,
-    		CustomerMapper mapper) {
+    		CustomerMapper mapper, CustomerUtils customerUtils) {
         this.customerLoginRepository = customerLoginRepository;
         this.customerDetailsRepository = customerDetailsRepository;
         this.mapper = mapper;
+        this.customerUtils = customerUtils;
     }
 
 	public List<CustCredentials> getAll() {
@@ -71,7 +77,7 @@ public class CustomerLoginServiceImpl implements CustomerLoginService {
             customerLoginRepository.save(cust);
 
             otpResponse.setCustId(cust.getCustId());
-            otpResponse.setCust_name(cust.getCust_name());
+            otpResponse.setCust_name(cust.getCustName());
             otpResponse.setMessage(AppConstants.ACCOUNT_ALREADY_EXISTS);
         }
         
@@ -101,25 +107,32 @@ public class CustomerLoginServiceImpl implements CustomerLoginService {
         CustCredentials cust = optionalCust.get();
         
         if (cust.getOtp().equals(otpRequest.getOtp())) {
-            
-            CustomerDetails custDetails = new CustomerDetails();
-            custDetails.setC_mobile(cust.getMobile());
-            custDetails.setCustId(cust.getCustId());
-            custDetails.setC_firstName(cust.getCust_name());
-            custDetails.setC_email(cust.getEmail());
-            customerDetailsRepository.save(custDetails);
-            
-            verifyOTPResponse.setOtpVerified(true);
-            verifyOTPResponse.setMessage(AppConstants.OTP_VERIFIED_SUCCESFULLY);
-            statusHandler.setStatusCode("200");
-            statusHandler.setMessage("OTP VERIFICATION SUCCESSFUL");
-            
-           
-            verifyOTPResponse.setOtp(otpRequest.getOtp());
-            verifyOTPResponse.setMobile(cust.getMobile());
-            verifyOTPResponse.setCustId(cust.getCustId());
-            verifyOTPResponse.setStatusHandler(statusHandler);
-            
+        	if(otpRequest.getMessage().equalsIgnoreCase(AppConstants.ACCOUNT_ALREADY_EXISTS)) {
+        		verifyOTPResponse.setOtpVerified(true);
+                verifyOTPResponse.setMessage(AppConstants.OTP_VERIFIED_SUCCESFULLY);
+                verifyOTPResponse.setOtp(otpRequest.getOtp());
+                verifyOTPResponse.setMobile(cust.getMobile());
+                verifyOTPResponse.setCustId(cust.getCustId());
+                verifyOTPResponse.setMobile(cust.getMobile());
+                statusHandler.setStatusCode("200");
+                statusHandler.setMessage("OTP VERIFICATION SUCCESSFUL");
+                verifyOTPResponse.setStatusHandler(statusHandler);
+        	}else {
+        		CustomerDetailsDTO custDetailsDTO = new CustomerDetailsDTO();
+                custDetailsDTO.setcMobile(cust.getMobile());
+                custDetailsDTO.setCustId(cust.getCustId());
+                
+                CustomerResponse savedCustomer = customerUtils.createCustomer(custDetailsDTO);
+                Optional.ofNullable(savedCustomer).orElseThrow(() -> new RuntimeException(AppConstants.CUSTOMER_DETAILS_NOT_SAVED));
+                System.out.println(savedCustomer.toString());
+                verifyOTPResponse.setCustId(savedCustomer.getDetailsDTO().getCustId());
+                verifyOTPResponse.setMobile(savedCustomer.getDetailsDTO().getcMobile());
+                statusHandler.setStatusCode("200");
+                statusHandler.setMessage("CUSTOMER CREATED SUCCESFULLY");
+                verifyOTPResponse.setStatusHandler(statusHandler);
+//                customerDetailsRepository.save(custDetails);
+        	}
+              
             logger.info("END : VerifyOTP Repository : " + verifyOTPResponse);
             return verifyOTPResponse;
         } else {

@@ -18,27 +18,20 @@ public interface CustomerMapper {
 
     // Entity to DTO
     @Mapping(source = "custId", target = "custId")
-    @Mapping(source = "c_firstName", target = "c_firstName")
-    @Mapping(source = "c_lastName", target = "c_lastName")
-    @Mapping(source = "c_mobile", target = "c_mobile")
-    @Mapping(source = "c_email", target = "c_email")
-    @Mapping(source = "custAddress", target = "address")
+    @Mapping(source = "cFirstname", target = "cFirstname")
+    @Mapping(source = "cLastname", target = "cLastname")
+    @Mapping(source = "cMobile", target = "cMobile")
+    @Mapping(source = "cEmail", target = "cEmail")
     CustomerDetailsDTO toDto(CustomerDetails entity);
 
-    @Mapping(source = "c_address_id", target = "c_address_Id")
-    CustAddressDTO toDto(CustAddress entity);
 
     // DTO to Entity (optional for POST/PUT)
     @Mapping(source = "custId", target = "custId")
-    @Mapping(source = "c_firstName", target = "c_firstName")
-    @Mapping(source = "c_lastName", target = "c_lastName")
-    @Mapping(source = "c_mobile", target = "c_mobile")
-    @Mapping(source = "c_email", target = "c_email")
-    @Mapping(source = "address", target = "custAddress")
+    @Mapping(source = "cFirstname", target = "cFirstname")
+    @Mapping(source = "cLastname", target = "cLastname")
+    @Mapping(source = "cMobile", target = "cMobile")
+    @Mapping(source = "cEmail", target = "cEmail")
     CustomerDetails toEntity(CustomerDetailsDTO dto);
-
-    @Mapping(source = "c_address_Id", target = "c_address_id")
-    CustAddress toEntity(CustAddressDTO dto);
 
     List<CustomerDetailsDTO> toDtoList(List<CustomerDetails> entities);
 

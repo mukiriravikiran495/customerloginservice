@@ -18,5 +18,6 @@ public class AppConstants {
 	public static final String OTP_VERIFIED_SUCCESFULLY = "OTP_VERIFIED_SUCCESFULLY";
 	public static final String OTP_VERIFIED_FAILED = "OTP_VERIFIED_FAILED";
 	public static final String TOKEN_GENERATED_SUCCESSFULLY = "TOKEN_GENERATED_SUCCESSFULLY";
+	public static final String CUSTOMER_DETAILS_NOT_SAVED = "CUSTOMER_DETAILS_NOT_SAVED";
 	
 }

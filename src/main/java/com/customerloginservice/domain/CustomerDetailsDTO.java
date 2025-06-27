@@ -1,64 +1,159 @@
 package com.customerloginservice.domain;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class CustomerDetailsDTO {
 
-	private String custId;
-	private String c_firstName;
-	private String c_lastName;
-	private String c_mobile;
-	private String c_email;
-	private CustAddressDTO address;
+	private Long custId;
+	private String cFirstname;
+	private String cLastname;
+	private String cMobile;
+	private String cEmail;
+	private String cAddress1;
 	
-	public String getCustId() {
+	private String cCity;
+	
+	private String cState;
+	
+	private String cZipcode;
+	
+	private Double pickupLattitude;
+	
+	private Double pickupLongitude;
+	private LocalDateTime createdAt = LocalDateTime.now();
+    private String createdBy;
+	
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+
+	public Long getCustId() {
 		return custId;
 	}
-	public void setCustId(String custId) {
+
+
+	public void setCustId(Long custId) {
 		this.custId = custId;
 	}
-	public String getC_firstName() {
-		return c_firstName;
+
+
+	public String getcFirstname() {
+		return cFirstname;
 	}
-	public void setC_firstName(String c_firstName) {
-		this.c_firstName = c_firstName;
+
+
+	public void setcFirstname(String cFirstname) {
+		this.cFirstname = cFirstname;
 	}
-	public String getC_lastName() {
-		return c_lastName;
+
+
+	public String getcLastname() {
+		return cLastname;
 	}
-	public void setC_lastName(String c_lastName) {
-		this.c_lastName = c_lastName;
+
+
+	public void setcLastname(String cLastname) {
+		this.cLastname = cLastname;
 	}
-	public String getC_mobile() {
-		return c_mobile;
+
+
+	public String getcMobile() {
+		return cMobile;
 	}
-	public void setC_mobile(String c_mobile) {
-		this.c_mobile = c_mobile;
+
+
+	public void setcMobile(String cMobile) {
+		this.cMobile = cMobile;
 	}
-	public String getC_email() {
-		return c_email;
+
+
+	public String getcEmail() {
+		return cEmail;
 	}
-	public void setC_email(String c_email) {
-		this.c_email = c_email;
+
+
+	public void setcEmail(String cEmail) {
+		this.cEmail = cEmail;
 	}
-	
-	public CustAddressDTO getAddress() {
-		return address;
+
+
+	public String getcAddress1() {
+		return cAddress1;
 	}
-	public void setAddress(CustAddressDTO address) {
-		this.address = address;
+
+
+	public void setcAddress1(String cAddress1) {
+		this.cAddress1 = cAddress1;
 	}
-	
-	public CustomerDetailsDTO(String custId, String c_firstName, String c_lastName, String c_mobile, String c_email,
-			CustAddressDTO address) {
-		super();
-		this.custId = custId;
-		this.c_firstName = c_firstName;
-		this.c_lastName = c_lastName;
-		this.c_mobile = c_mobile;
-		this.c_email = c_email;
-		this.address = address;
+
+
+	public String getcCity() {
+		return cCity;
 	}
+
+
+	public void setcCity(String cCity) {
+		this.cCity = cCity;
+	}
+
+
+	public String getcState() {
+		return cState;
+	}
+
+
+	public void setcState(String cState) {
+		this.cState = cState;
+	}
+
+
+	public String getcZipcode() {
+		return cZipcode;
+	}
+
+
+	public void setcZipcode(String cZipcode) {
+		this.cZipcode = cZipcode;
+	}
+
+
+	public Double getPickupLattitude() {
+		return pickupLattitude;
+	}
+
+
+	public void setPickupLattitude(Double pickupLattitude) {
+		this.pickupLattitude = pickupLattitude;
+	}
+
+
+	public Double getPickupLongitude() {
+		return pickupLongitude;
+	}
+
+
+	public void setPickupLongitude(Double pickupLongitude) {
+		this.pickupLongitude = pickupLongitude;
+	}
+
+
 	public CustomerDetailsDTO() {
 		
 	}
